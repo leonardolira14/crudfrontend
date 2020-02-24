@@ -1,0 +1,175 @@
+<div class="container">
+    <div class="row p-t-30">
+        <div class="col-12 mb-3">
+            <h3>Clientes</h3>
+        </div>
+        <mat-form-field class="col-8">
+            <mat-label>
+                Buscar Cliente
+            </mat-label>
+            <input matInput  [(ngModel)]="palabra">
+        </mat-form-field>
+        <div class="col-4 text-center">
+            <div class="btn-group float-right">
+                <button class="btn btn-outline-primary mr-3" (click)="buscar()">Buscar</button>
+                <button class="btn btn-outline-secondary" (click)="modal_clientes=!modal_clientes"><div class="fa fa-plus"></div></button>
+            </div>
+            
+        </div>
+
+       
+    </div>
+    <div class="row m-t-30">
+        <div class="col-3  m-t-30"
+            *ngFor="let persona of lista_clientes  | paginate: {itemsPerPage: 20, currentPage: pageActual}; index as i">
+            <mat-card [ngClass]="{'bg-gary-lte': persona.Status==='0'}">
+                <mat-card-header>
+                    
+                    <mat-card-title class="text-blackk">{{persona.Nombre}} {{persona.Apellido_Pat}} {{persona.Apellido_Mat}}
+                    </mat-card-title>
+                    <p mat-line>
+                        <button class="text-blackk button-menu-right" mat-icon-button [matMenuTriggerFor]="menu"
+                            aria-label="Example icon-button with a menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="editar(persona.IDCliente)">
+                                <mat-icon>create</mat-icon>
+                                <span>Editar Datos</span>
+                            </button>
+    
+                            <button (click)="baja(persona.IDCliente)" mat-menu-item>
+                                <mat-icon>power_settings_new</mat-icon>
+                                <span> {{ (persona.Status==='1')?'Baja':'Alta' }} </span>
+                            </button>
+                        </mat-menu>
+                    </p>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-grid-list cols="4" class="w-100 text-muted">
+                        <mat-grid-tile class="text-left " [colspan]="2" [rowspan]="1">
+                            <small class="d-block w-100">RFC</small>
+                        </mat-grid-tile>
+                        <mat-grid-tile class="text-right" [colspan]="2" [rowspan]="1">
+                            {{persona.RFC}}
+                        </mat-grid-tile>
+                        <mat-grid-tile class="text-left " [colspan]="2" [rowspan]="1">
+                            <small class="d-block w-100">Teléfono</small>
+                        </mat-grid-tile>
+                        <mat-grid-tile class="text-right" [colspan]="2" [rowspan]="1">
+                            {{persona.Tel}}
+                        </mat-grid-tile>
+    
+    
+                    </mat-grid-list>
+    
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-12 text-center m-t-40">
+            <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior"
+                nextLabel="Siguiente"></pagination-controls>
+        </div>
+    </div>
+</div>
+
+
+<div class="preload-modal" *ngIf="modal_clientes">
+    <div class="container ">
+        <div class="row ">
+            <mat-card class="col-7 m-auto">
+                <mat-card-header>
+                    <mat-card-title>Clientes</mat-card-title>
+                    <button (click)="modal_clientes=!modal_clientes" class="btn-close-modal" mat-icon-button
+                        aria-label="Example icon-button with a menu">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                </mat-card-header>
+                <div class="container text-blackk">
+                    <form class="row" [formGroup]="formGroup" (ngSubmit)="decicion()">
+                        <mat-form-field class="col-4">
+                            <mat-label>
+                                Nombre
+                            </mat-label>
+                            <input matInput required formControlName="Nombre" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-4">
+                            <mat-label >
+                                Apellido Paterno
+                            </mat-label>
+                            <input matInput required formControlName="Apellido_Pat" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-4 text-blackk">
+                            <mat-label>
+                                Apellido Materno
+                            </mat-label>
+                            <input matInput required formControlName="Apellido_Mat" required>
+                        </mat-form-field>
+                        
+                        <mat-form-field class="col-6">
+                            <mat-label>
+                                RFC
+                            </mat-label>
+                            <input matInput required formControlName="RFC" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-6">
+                            <mat-label>
+                                Calle
+                            </mat-label>
+                            <input matInput required formControlName="Calle" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-2">
+                            <mat-label>
+                                No Interior
+                            </mat-label>
+                            <input matInput  formControlName="No_Interior">
+                        </mat-form-field>
+                        <mat-form-field class="col-2">
+                            <mat-label>
+                                No Exterior
+                            </mat-label>
+                            <input matInput required formControlName="No_Exterior" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-8">
+                            <mat-label>
+                                Municipio
+                            </mat-label>
+                            <input matInput required formControlName="Municipio" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-6">
+                            <mat-label>
+                                Estado
+                            </mat-label>
+                            <input matInput required formControlName="Estado" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-6">
+                            <mat-label>
+                                Código Postal
+                            </mat-label>
+                            <input matInput required formControlName="CP" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-6">
+                            <mat-label>
+                                Teléfono
+                            </mat-label>
+                            <input matInput required formControlName="Tel" required>
+                        </mat-form-field>
+                        <mat-form-field class="col-6">
+                            <mat-label>
+                                Correo Electrónico
+                            </mat-label>
+                            <input matInput required formControlName="Correo" required>
+                        </mat-form-field>
+                        <div class="col-12">
+                            <div class=" btn-group float-right" role="group">
+                                <button type="reset" class="btn btn-outline-danger mr-3">Cancelar</button>
+                                <button type="submit" class="btn btn-succes">Aceptar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                    
+                </mat-card>
+        </div>
+    </div>
+</div>
